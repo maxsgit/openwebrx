@@ -582,6 +582,12 @@ img.openwebrx-mirror-img
     text-align: center;
 }
 
+#openwebrx-panel-receiver .openwebrx-waterfall-button {
+    width: 27px;
+    height: 27px;
+    text-align: center;
+}
+
 #openwebrx-mute-on
 {
 	color: lime;

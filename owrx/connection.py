@@ -107,6 +107,7 @@ class OpenWebRxReceiverClient(OpenWebRxClient):
         self.sdr = None
         self.configSub = None
         self.connectionProperties = {}
+        self.waterfall = False
 
         try:
             ClientRegistry.getSharedInstance().addClient(self)
@@ -143,6 +144,10 @@ class OpenWebRxReceiverClient(OpenWebRxClient):
                 if message["type"] == "dspcontrol":
                     if "action" in message and message["action"] == "start":
                         self.startDsp()
+                    if "action" in message and message["action"] == "show":
+                        self.waterfall = True
+                    if "action" in message and message["action"] == "hide":
+                        self.waterfall = False
 
                     if "params" in message:
                         dsp = self.getDsp()
@@ -285,7 +290,8 @@ class OpenWebRxReceiverClient(OpenWebRxClient):
         return self.dsp
 
     def write_spectrum_data(self, data):
-        self.mp_send(bytes([0x01]) + data)
+        if self.waterfall:
+            self.mp_send(bytes([0x01]) + data)
 
     def write_dsp_data(self, data):
         self.send(bytes([0x02]) + data)

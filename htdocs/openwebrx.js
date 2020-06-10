@@ -30,6 +30,7 @@ var fft_size;
 var fft_compression = "none";
 var fft_codec;
 var waterfall_setup_done = 0;
+var showWaterfall = false;
 var secondary_fft_size;
 
 function e(what) {
@@ -57,6 +58,12 @@ function toggleMute() {
     }
 
     updateVolume();
+}
+
+function toggleWaterfall() {
+    showWaterfall = !showWaterfall;
+    ws.send(JSON.stringify({type: "dspcontrol", action: showWaterfall ? "show" : "hide"}));
+    if (!showWaterfall) waterfall_clear();
 }
 
 function zoomInOneStep() {
@@ -1329,6 +1336,7 @@ function openwebrx_init() {
     $('#openwebrx-panel-receiver').demodulatorPanel();
     window.addEventListener("resize", openwebrx_resize);
     bookmarks = new BookmarkBar();
+    WaterfallButton();
     initSliders();
 }
 
